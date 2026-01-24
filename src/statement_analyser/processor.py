@@ -35,7 +35,6 @@ def set_column_types(statement_df: pd.DataFrame) -> pd.DataFrame:
         HDFC_WITHDRAWAL_COL: float,
         HDFC_DEPOSITED_COL: float,
         "Closing Balance": float,
-        "Date": "datetime64[ns]",
     }
     statement_df = statement_df.astype(dtypes)
     return statement_df
@@ -49,6 +48,15 @@ def transform_transactions_df(transactions_df: pd.DataFrame) -> pd.DataFrame:
     transactions_df["Time_Parsed"] = transactions_df["Time"].apply(parse_time)
 
     return transactions_df
+
+
+def transform_statement_df(statement_df: pd.DataFrame) -> pd.DataFrame:
+    statement_df["Date"] = pd.to_datetime(
+        statement_df["Date"], format="%d/%m/%y"
+    )
+    statement_df["Date_Formated"] = statement_df["Date"].dt.strftime("%d-%b-%Y")
+
+    return statement_df
 
 
 def filter_deposit_withdrawal(

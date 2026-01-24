@@ -1,11 +1,10 @@
 from typing import List
 import pandas as pd
 
-from statement_analyser.extractor import extract_text_from_pdf, parse_phonepe_statement
-from statement_analyser.helper import parse_time
 from statement_analyser.processor import (
     process_upi_narration,
     set_column_types,
+    transform_statement_df,
     transform_transactions_df,
 )
 from statement_analyser.loader import (
@@ -25,9 +24,7 @@ def etl_hdfc_bank_statement_df(statement_file_path: str) -> pd.DataFrame:
     """
     statement_df = load_hdfc_bank_statement(statement_file_path)
     statement_df = set_column_types(statement_df)
-    statement_df["Date_Formated"] = pd.to_datetime(
-        statement_df["Date"], format="%d/%m/%y"
-    ).dt.strftime("%d-%b-%Y")
+    statement_df = transform_statement_df(statement_df)
     statement_df = process_upi_narration(statement_df)
     return statement_df
 
