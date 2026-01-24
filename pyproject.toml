@@ -1,0 +1,27 @@
+[build-system]
+requires = ["uv_build>=0.9.23,<0.10.0"]
+build-backend = "uv_build"
+
+[project]
+name = "statement-analyser"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn",
+    "plotly",
+    "PyMuPDF",
+    "xlrd",
+]
+
+[project.optional-dependencies]
+dev = [
+    "jupyter",
+    "notebook",
+    "ipykernel"
+]
