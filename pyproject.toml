@@ -20,8 +20,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = [
-    "jupyter",
-    "notebook",
-    "ipykernel"
-]
+dev = [ "jupyter", "notebook", "ipykernel"]
+
+
+[dependency-groups]
+dev = ["pytest>=9.0.2"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
