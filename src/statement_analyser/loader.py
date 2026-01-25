@@ -13,8 +13,10 @@ def load_hdfc_bank_statement(statement_file_path: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The loaded bank statement DataFrame.
     """
-    statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=17)
+    statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=18)
     statement_df.drop(index=0, inplace=True)
+    print(statement_df.head())
+    print(statement_df.tail())
     return statement_df
 
 
