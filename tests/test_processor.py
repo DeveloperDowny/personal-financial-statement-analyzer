@@ -25,7 +25,7 @@ def test_transform_transactions_df():
 def test_transform_statement_df():
     statement_df_sample = pd.DataFrame(
         {
-            "Date": ["01-09-2023", "15-09-2023"],
+            "Date": ["01/09/23", "15/09/23"],
             "Description": ["Test1", "Test2"],
             "Withdrawal": [500, None],
             "Deposit": [None, 1500],
