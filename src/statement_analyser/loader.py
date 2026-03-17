@@ -3,6 +3,8 @@ import pandas as pd
 
 from statement_analyser.extractor import extract_text_from_pdf, parse_phonepe_statement
 
+PAYTM_TRANSACTIONS_SHEET_NAME = "Passbook Payment History"
+
 
 def load_hdfc_bank_statement(statement_file_path: str) -> pd.DataFrame:
     """
@@ -13,7 +15,9 @@ def load_hdfc_bank_statement(statement_file_path: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The loaded bank statement DataFrame.
     """
-    statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=18)
+    # statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=18)
+    statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=26)
+    # statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=18)
     statement_df.drop(index=0, inplace=True)
     print(statement_df.head())
     print(statement_df.tail())
@@ -34,3 +38,16 @@ def load_phonepe_statement_df(pdf_file: str) -> List[dict]:
     transactions_df = pd.DataFrame(transactions)
 
     return transactions_df
+
+
+def load_paytm_statement_df(excel_file: str) -> List[dict]:
+    """
+    Extract UPI transactions from a Paytm statement Excel file.
+
+    Args:
+        excel_file (str): The path to the Paytm statement Excel file.
+    Returns:
+        pd.DataFrame: A DataFrame containing the extracted UPI transactions.
+    """
+    df = pd.read_excel(excel_file, sheet_name=PAYTM_TRANSACTIONS_SHEET_NAME)
+    return df

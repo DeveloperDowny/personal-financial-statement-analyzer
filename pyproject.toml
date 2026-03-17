@@ -17,6 +17,7 @@ dependencies = [
     "plotly",
     "PyMuPDF",
     "xlrd",
+    "openpyxl"
 ]
 
 [project.optional-dependencies]

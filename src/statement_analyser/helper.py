@@ -15,6 +15,17 @@ def parse_time(time_str) -> datetime.time:
     """
     return datetime.strptime(time_str, "%I:%M %p").time()
 
+def parse_time_24(time_str) -> datetime.time:
+    """
+    Function to parse time strings in "HH:MM:SS" format.
+
+    Args:
+        time_str (str): The time string to parse.
+    Returns:
+        datetime.time: The parsed time object.
+    """
+    return datetime.strptime(time_str, "%H:%M:%S").time()
+
 
 def format_date(date_str):
     try:

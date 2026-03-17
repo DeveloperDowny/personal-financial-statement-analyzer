@@ -2,7 +2,7 @@ import pandas as pd
 
 from statement_analyser.constants import HDFC_DEPOSITED_COL, HDFC_WITHDRAWAL_COL
 from statement_analyser.extractor import extract_upi_description, extract_upi_name
-from statement_analyser.helper import parse_time
+from statement_analyser.helper import parse_time, parse_time_24
 
 
 def process_upi_narration(df: pd.DataFrame) -> pd.DataFrame:
@@ -50,6 +50,17 @@ def transform_transactions_df(transactions_df: pd.DataFrame) -> pd.DataFrame:
     return transactions_df
 
 
+
+
+def transform_paytm_transactions_df(transactions_df: pd.DataFrame) -> pd.DataFrame:
+    transactions_df["Date_Formated"] = pd.to_datetime(
+        transactions_df["Date"], format="%d/%m/%Y"
+    ).dt.strftime("%d-%b-%Y")
+    transactions_df["Time_Parsed"] = transactions_df["Time"].apply(parse_time_24)
+
+    return transactions_df
+
+
 def transform_statement_df(statement_df: pd.DataFrame) -> pd.DataFrame:
     statement_df["Date"] = pd.to_datetime(
         statement_df["Date"], format="%d/%m/%y"
@@ -85,6 +96,39 @@ def filter_deposit_withdrawal(
     )
 
 
+def filter_deposit_withdrawal_paytm(
+    statement_df: pd.DataFrame, transactions_df: pd.DataFrame
+):
+    """
+    Filter the statement and transactions DataFrames into withdrawals and deposits.
+
+    Args:
+        statement_df (pd.DataFrame): The bank statement DataFrame.
+        transactions_df (pd.DataFrame): The transactions DataFrame.
+    Returns:
+        Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]: Four DataFrames -
+            withdrawal_statements_df, withdrawal_transactions_df,
+            deposit_statements_df, deposit_transactions_df.
+    """
+    withdrawal_statements_df = statement_df[statement_df[HDFC_WITHDRAWAL_COL].notnull()]
+
+    # transactions_df["Amount"] = transactions_df["Amount"].astype(float)
+    # -1,952.00 -> -1952.00
+    transactions_df["Amount"] = transactions_df["Amount"].replace(
+        r"[,]", "", regex=True
+    ).astype(float)
+    withdrawal_transactions_df = transactions_df[transactions_df["Amount"] < 0]
+
+    deposit_statements_df = statement_df[statement_df[HDFC_DEPOSITED_COL].notnull()]
+    deposit_transactions_df = transactions_df[transactions_df["Amount"] > 0]
+    return (
+        withdrawal_statements_df,
+        withdrawal_transactions_df,
+        deposit_statements_df,
+        deposit_transactions_df,
+    )
+
+
 def get_extended_statement(
     statement_df: pd.DataFrame, transactions_df: pd.DataFrame, withdrawal: bool = True
 ) -> pd.DataFrame:
@@ -101,6 +145,7 @@ def get_extended_statement(
     else:
         statement_col = HDFC_DEPOSITED_COL
 
+    transactions_df["Amount"] = transactions_df["Amount"].abs()
     extended_statement_df = pd.merge(
         statement_df,
         transactions_df,
