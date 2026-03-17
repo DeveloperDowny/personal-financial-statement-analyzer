@@ -1,6 +1,9 @@
 import pandas as pd
-from statement_analyser.processor import transform_transactions_df
-from statement_analyser.processor import transform_statement_df
+
+from statement_analyser.processor import (
+    transform_statement_df,
+    transform_transactions_df,
+)
 
 
 def test_transform_transactions_df():

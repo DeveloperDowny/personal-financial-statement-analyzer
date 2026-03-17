@@ -1,5 +1,6 @@
-import pandas as pd
 from datetime import datetime
+
+import pandas as pd
 from sklearn.ensemble import IsolationForest
 from sklearn.preprocessing import LabelEncoder
 
@@ -47,10 +48,12 @@ def filter_by_time(
     falls within the specified time range.
 
     Args:
-        df (pd.DataFrame): The input DataFrame containing a 'Time_Parsed' column.
+        df (pd.DataFrame): The input DataFrame containing a
+            'Time_Parsed' column.
         start_time_str (str): The start time in "HH:MM AM/PM" format.
         end_time_str (str): The end time in "HH:MM AM/PM" format.
-        inplace (bool): If True, modify the DataFrame in place. Default is False.
+        inplace (bool): If True, modify the DataFrame in place.
+            Default is False.
     Returns:
         pd.DataFrame: The filtered DataFrame.
     """
@@ -60,18 +63,25 @@ def filter_by_time(
     start_time = datetime.strptime(start_time_str, "%I:%M %p")
     end_time = datetime.strptime(end_time_str, "%I:%M %p")
 
-    df = df[(df["Time_Parsed"] >= start_time.time()) & (df["Time_Parsed"] <= end_time.time())]
+    df = df[
+        (df["Time_Parsed"] >= start_time.time())
+        & (df["Time_Parsed"] <= end_time.time())
+    ]
     return df
 
 
-def encode_column(df: pd.DataFrame, column_name: str, new_column_name: str) -> pd.DataFrame:
+def encode_column(
+    df: pd.DataFrame, column_name: str, new_column_name: str
+) -> pd.DataFrame:
     le = LabelEncoder()
     labelled_df = df.copy()
     labelled_df[new_column_name] = le.fit_transform(labelled_df[column_name])
     return labelled_df
 
 
-def prepare_data_for_isolation_forest(df: pd.DataFrame, isolated_col: str) -> pd.DataFrame:
+def prepare_data_for_isolation_forest(
+    df: pd.DataFrame, isolated_col: str
+) -> pd.DataFrame:
     df_to_process = df[["UPI_Name_Labelled", isolated_col]]
     return df_to_process
 

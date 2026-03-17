@@ -1,5 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import plotly.express as px
 
 
@@ -21,7 +21,9 @@ def plot_amounts(df: pd.DataFrame, title: str, xlabel: str, ylabel: str):
     # ---- tilt x labels
 
 
-def plot_amounts_plotly(df: pd.DataFrame, title: str, xlabel: str, ylabel: str):
+def plot_amounts_plotly(
+    df: pd.DataFrame, title: str, xlabel: str, ylabel: str
+):
 
     fig = px.bar(
         df,

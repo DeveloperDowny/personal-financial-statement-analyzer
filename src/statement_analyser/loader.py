@@ -1,7 +1,11 @@
 from typing import List
+
 import pandas as pd
 
-from statement_analyser.extractor import extract_text_from_pdf, parse_phonepe_statement
+from statement_analyser.extractor import (
+    extract_text_from_pdf,
+    parse_phonepe_statement,
+)
 
 PAYTM_TRANSACTIONS_SHEET_NAME = "Passbook Payment History"
 
@@ -15,9 +19,15 @@ def load_hdfc_bank_statement(statement_file_path: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: The loaded bank statement DataFrame.
     """
-    # statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=18)
-    statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=26)
-    # statement_df = pd.read_excel(statement_file_path, skiprows=20, skipfooter=18)
+    # statement_df = pd.read_excel(
+    #     statement_file_path, skiprows=20, skipfooter=18
+    # )
+    statement_df = pd.read_excel(
+        statement_file_path, skiprows=20, skipfooter=26
+    )
+    # statement_df = pd.read_excel(
+    #     statement_file_path, skiprows=20, skipfooter=18
+    # )
     statement_df.drop(index=0, inplace=True)
     print(statement_df.head())
     print(statement_df.tail())

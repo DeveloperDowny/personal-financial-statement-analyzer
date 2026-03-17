@@ -1,17 +1,18 @@
 from typing import List
+
 import pandas as pd
 
+from statement_analyser.loader import (
+    load_hdfc_bank_statement,
+    load_paytm_statement_df,
+    load_phonepe_statement_df,
+)
 from statement_analyser.processor import (
     process_upi_narration,
     set_column_types,
     transform_paytm_transactions_df,
     transform_statement_df,
     transform_transactions_df,
-)
-from statement_analyser.loader import (
-    load_hdfc_bank_statement,
-    load_paytm_statement_df,
-    load_phonepe_statement_df,
 )
 
 

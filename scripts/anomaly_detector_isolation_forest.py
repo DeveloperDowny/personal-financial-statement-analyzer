@@ -1,4 +1,7 @@
+from pathlib import Path
+
 import plotly.express as px
+
 from statement_analyser.analyzer import find_anomalous_transactions
 from statement_analyser.constants import HDFC_WITHDRAWAL_COL
 from statement_analyser.pipeline import (
@@ -6,12 +9,12 @@ from statement_analyser.pipeline import (
     etl_phonepe_statement_df,
 )
 from statement_analyser.processor import filter_deposit_withdrawal
-from pathlib import Path
-
 
 curr_dir = Path(__file__).parent
 target_dir = curr_dir / ".." / "data"
-phonepe_statement_file_path = target_dir / "PhonePe_Statement_Jan2025_Jan2026 (1).pdf"
+phonepe_statement_file_path = (
+    target_dir / "PhonePe_Statement_Jan2025_Jan2026 (1).pdf"
+)
 statement_file_path = target_dir / "y25-v2.xls"
 
 
@@ -67,7 +70,9 @@ anomalies_df.columns
 
 
 # Create a bar chart showing the count of anomalies by date
-anomalies_count_by_date = anomalies_df.groupby("Date").size().reset_index(name="Count")
+anomalies_count_by_date = (
+    anomalies_df.groupby("Date").size().reset_index(name="Count")
+)
 fig_bar = px.bar(
     anomalies_count_by_date,
     x="Date",

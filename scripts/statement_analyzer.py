@@ -44,15 +44,24 @@ morning_transactions_df = morning_transactions_df[
 
 morning_transactions_df.head()
 
-max_withdrawal_rows = morning_transactions_df.groupby("Date_Formated")[HDFC_WITHDRAWAL_COL].idxmax()
+max_withdrawal_rows = morning_transactions_df.groupby("Date_Formated")[
+    HDFC_WITHDRAWAL_COL
+].idxmax()
 day_wise_max = morning_transactions_df.loc[max_withdrawal_rows]
 
 
-day_wise_max = day_wise_max[["Date_Formated", HDFC_WITHDRAWAL_COL, "Time_Parsed", "UPI_Name"]]
+day_wise_max = day_wise_max[
+    ["Date_Formated", HDFC_WITHDRAWAL_COL, "Time_Parsed", "UPI_Name"]
+]
 print(day_wise_max)
 
 print(day_wise_max[HDFC_WITHDRAWAL_COL].sum() - 188)
-# fig = px.scatter(morning_transactions_df, x='Date_Formated', y=WITHDRAWAL_COL, title='Morning Withdrawals by UPI Name')
+# fig = px.scatter(
+#     morning_transactions_df,
+#     x='Date_Formated',
+#     y=WITHDRAWAL_COL,
+#     title='Morning Withdrawals by UPI Name',
+# )
 fig = px.scatter(
     morning_transactions_df,
     x="Date_Formated",
