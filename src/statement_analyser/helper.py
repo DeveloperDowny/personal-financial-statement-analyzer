@@ -15,6 +15,7 @@ def parse_time(time_str) -> datetime.time:
     """
     return datetime.strptime(time_str, "%I:%M %p").time()
 
+
 def parse_time_24(time_str) -> datetime.time:
     """
     Function to parse time strings in "HH:MM:SS" format.
@@ -59,25 +60,18 @@ def filter_by_time(
     start_time = datetime.strptime(start_time_str, "%I:%M %p")
     end_time = datetime.strptime(end_time_str, "%I:%M %p")
 
-    df = df[
-        (df["Time_Parsed"] >= start_time.time())
-        & (df["Time_Parsed"] <= end_time.time())
-    ]
+    df = df[(df["Time_Parsed"] >= start_time.time()) & (df["Time_Parsed"] <= end_time.time())]
     return df
 
 
-def encode_column(
-    df: pd.DataFrame, column_name: str, new_column_name: str
-) -> pd.DataFrame:
+def encode_column(df: pd.DataFrame, column_name: str, new_column_name: str) -> pd.DataFrame:
     le = LabelEncoder()
     labelled_df = df.copy()
     labelled_df[new_column_name] = le.fit_transform(labelled_df[column_name])
     return labelled_df
 
 
-def prepare_data_for_isolation_forest(
-    df: pd.DataFrame, isolated_col: str
-) -> pd.DataFrame:
+def prepare_data_for_isolation_forest(df: pd.DataFrame, isolated_col: str) -> pd.DataFrame:
     df_to_process = df[["UPI_Name_Labelled", isolated_col]]
     return df_to_process
 

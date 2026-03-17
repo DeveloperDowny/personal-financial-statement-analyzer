@@ -42,14 +42,12 @@ def set_column_types(statement_df: pd.DataFrame) -> pd.DataFrame:
 
 def transform_transactions_df(transactions_df: pd.DataFrame) -> pd.DataFrame:
     transactions_df["Date"] = transactions_df["Date"].str.replace("Sept", "Sep")
-    transactions_df["Date_Formated"] = pd.to_datetime(
-        transactions_df["Date"]
-    ).dt.strftime("%d-%b-%Y")
+    transactions_df["Date_Formated"] = pd.to_datetime(transactions_df["Date"]).dt.strftime(
+        "%d-%b-%Y"
+    )
     transactions_df["Time_Parsed"] = transactions_df["Time"].apply(parse_time)
 
     return transactions_df
-
-
 
 
 def transform_paytm_transactions_df(transactions_df: pd.DataFrame) -> pd.DataFrame:
@@ -62,17 +60,13 @@ def transform_paytm_transactions_df(transactions_df: pd.DataFrame) -> pd.DataFra
 
 
 def transform_statement_df(statement_df: pd.DataFrame) -> pd.DataFrame:
-    statement_df["Date"] = pd.to_datetime(
-        statement_df["Date"], format="%d/%m/%y"
-    )
+    statement_df["Date"] = pd.to_datetime(statement_df["Date"], format="%d/%m/%y")
     statement_df["Date_Formated"] = statement_df["Date"].dt.strftime("%d-%b-%Y")
 
     return statement_df
 
 
-def filter_deposit_withdrawal(
-    statement_df: pd.DataFrame, transactions_df: pd.DataFrame
-):
+def filter_deposit_withdrawal(statement_df: pd.DataFrame, transactions_df: pd.DataFrame):
     """
     Filter the statement and transactions DataFrames into withdrawals and deposits.
 
@@ -96,9 +90,7 @@ def filter_deposit_withdrawal(
     )
 
 
-def filter_deposit_withdrawal_paytm(
-    statement_df: pd.DataFrame, transactions_df: pd.DataFrame
-):
+def filter_deposit_withdrawal_paytm(statement_df: pd.DataFrame, transactions_df: pd.DataFrame):
     """
     Filter the statement and transactions DataFrames into withdrawals and deposits.
 
@@ -114,9 +106,9 @@ def filter_deposit_withdrawal_paytm(
 
     # transactions_df["Amount"] = transactions_df["Amount"].astype(float)
     # -1,952.00 -> -1952.00
-    transactions_df["Amount"] = transactions_df["Amount"].replace(
-        r"[,]", "", regex=True
-    ).astype(float)
+    transactions_df["Amount"] = (
+        transactions_df["Amount"].replace(r"[,]", "", regex=True).astype(float)
+    )
     withdrawal_transactions_df = transactions_df[transactions_df["Amount"] < 0]
 
     deposit_statements_df = statement_df[statement_df[HDFC_DEPOSITED_COL].notnull()]
@@ -169,13 +161,9 @@ def build_summary_df(statement_df: pd.DataFrame) -> pd.DataFrame:
     withdrawal_df = statement_df[HDFC_WITHDRAWAL_COL].dropna()
     deposit_df = statement_df[HDFC_DEPOSITED_COL].dropna()
     withdrawal_summary_df = withdrawal_df.agg(["sum", "mean", "max"])
-    withdrawal_summary_df.columns = [
-        f"Withdrawal_{col}" for col in withdrawal_summary_df.columns
-    ]
+    withdrawal_summary_df.columns = [f"Withdrawal_{col}" for col in withdrawal_summary_df.columns]
     deposit_summary_df = deposit_df.agg(["sum", "mean", "max"])
-    deposit_summary_df.columns = [
-        f"Deposit_{col}" for col in deposit_summary_df.columns
-    ]
+    deposit_summary_df.columns = [f"Deposit_{col}" for col in deposit_summary_df.columns]
 
     common_summary_df = statement_df.agg(
         {

@@ -15,6 +15,14 @@ uv sync --extra dev
 - Always create feature branch from dev branch
 - Create PRs against dev branch
 
+## Pre-commit setup
+
+```bash
+uv sync --group dev
+uv run pre-commit install
+uv run pre-commit run --all-files
+```
+
 ## Run pytest
 
 ````cmd

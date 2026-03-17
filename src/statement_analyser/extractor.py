@@ -71,9 +71,7 @@ def parse_phonepe_statement(text: str) -> List[dict]:
     lines = text.splitlines()
 
     # Regex patterns to match relevant parts of the data
-    date_pattern = re.compile(
-        r"^[A-Za-z]+\s\d{1,2},\s\d{4}"
-    )  # Matches dates like Sep 28, 2024
+    date_pattern = re.compile(r"^[A-Za-z]+\s\d{1,2},\s\d{4}")  # Matches dates like Sep 28, 2024
     amount_pattern = re.compile(r"₹[\d,]+(\.\d+)?")  # Matches amounts like ₹65
     debit_credit_pattern = re.compile(r"(DEBIT|CREDIT)")
 
@@ -105,9 +103,7 @@ def parse_phonepe_statement(text: str) -> List[dict]:
 
         # Capture the transaction ID
         elif "Transaction ID" in line:
-            current_transaction["Transaction ID"] = line.split("Transaction ID")[
-                -1
-            ].strip()
+            current_transaction["Transaction ID"] = line.split("Transaction ID")[-1].strip()
 
         # Capture the UTR number
         elif "UTR No." in line:

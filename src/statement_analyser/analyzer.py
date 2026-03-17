@@ -27,9 +27,7 @@ def find_anomalous_transactions(
     return enriched_anomaly_df
 
 
-def find_anomalies_zscore(
-    statement_df: pd.DataFrame, threshold: float = 3.0
-) -> pd.DataFrame:
+def find_anomalies_zscore(statement_df: pd.DataFrame, threshold: float = 3.0) -> pd.DataFrame:
     """
     Get anomalies in the statement DataFrame using Z-Score method.
 
@@ -40,12 +38,8 @@ def find_anomalies_zscore(
         pd.DataFrame: The DataFrame with anomaly labels.
     """
 
-    statement_df["Withdrawal Z-Score"] = zscore(
-        statement_df["Withdrawal Amt."], nan_policy="omit"
-    )
-    statement_df["Deposit Z-Score"] = zscore(
-        statement_df["Deposit Amt."], nan_policy="omit"
-    )
+    statement_df["Withdrawal Z-Score"] = zscore(statement_df["Withdrawal Amt."], nan_policy="omit")
+    statement_df["Deposit Z-Score"] = zscore(statement_df["Deposit Amt."], nan_policy="omit")
 
     # ---- create a column Anomaly based on zscore threshold
     statement_df["Anomaly_ZScore"] = statement_df.apply(
